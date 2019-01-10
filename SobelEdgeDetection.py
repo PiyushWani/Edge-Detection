@@ -14,24 +14,14 @@ operatorx = [[1,0,-1],
            
 height= len(im)
 width = len(im[0])
-canvas = numpy.zeros((height+2, width+2))
-print("im shape:"+str(im.shape))
-print("Canvas Dim:"+str(canvas.shape))
-
-for i in range(height):
-    for j in range(width):
-        canvas[i+1][j+1] = im[i][j]  
-
-print("Padded Image Dim: "+str(canvas.shape))
-imsave("paddedImage.jpg", canvas)
-
 gx= numpy.zeros((height,width))
 gy= numpy.zeros((height,width))
 
 subimg = numpy.zeros([3,3,4])
-for row in range(1, height-1):
-    for col in range(1, width-1):
-        subimg = canvas[row:row+3, col:col+3]
+for row in range(0, height-2):
+    for col in range(0, width-2):
+        subimg = im[row:row+3, col:col+3]
+        #print("\n",subimg)
         values_x = numpy.zeros((3, 3))
         values_y = numpy.zeros((3, 3))
         
@@ -51,8 +41,8 @@ for row in range(1, height-1):
         #values_x = numpy.multiply(subimg, operatorx)
         # values_y = numpy.multiply(subimg, operatory)      
         
-        gx[row-1][col-1] = sumY#values_x.sum()
-        gy[row-1][col-1] = sumX#values_y.sum()
+        gx[row][col] = sumY#values_x.sum()
+        gy[row][col] = sumX#values_y.sum()
         
 mag = numpy.sqrt(gx ** 2 + gy ** 2)
 maxMag = -9999
@@ -73,3 +63,4 @@ gy  *= 255.0 / maxGy
 imsave('TC_EdgeDetectionSelf_x.png', gx) 
 imsave('TC_EdgeDetectionSelf_y.png', gy)     
 imsave('TC_EdgeDetectionSelf_mag.png', mag)
+print("The Gx, Gy and Edge Detection images have been copied to this project folder")
